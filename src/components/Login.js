@@ -1,7 +1,5 @@
 import { useEffect } from "react";
 import useAppContext from "../ContextApi";
-import postLoginData from "../requests/postLoginData";
-import { useNavigate } from "react-router-dom";
 
 export const Email = (props) => {
 	return (
@@ -62,8 +60,12 @@ export const Name = (props) => {
 
 export const Button = (props) => {
 	return (
-		<button className="px-6 py-1 mt-2 bg-blue-600 text-white rounded hover:bg-blue-500 transition-all">
-			{props.btnName}
+		<button
+			className={`px-6 py-1 mt-2 bg-blue-600 text-white rounded hover:bg-blue-500 transition-all ${
+				props.loading ? "cursor-not-allowed" : "cursor-pointer"
+			}`}
+		>
+			{props.loading ? "Loading..." : props.btnName}
 		</button>
 	);
 };
@@ -74,32 +76,26 @@ const Login = ({ isRegister }) => {
 		setEmail,
 		password,
 		setPassword,
-		errorMessage,
-		setErrorMessage,
-		loggingIn,
-		username,
+		postLoginData,
+		loginError,
+		setLoginError,
 		loading,
-		setLoading,
+		username,
 	} = useAppContext();
-
-	const navigate = useNavigate();
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		const { data, errorMsg } = await postLoginData("login", email, password);
-		loggingIn(data, errorMsg);
-		if (!username) return navigate("/");
-		return navigate("/todolist");
+		await postLoginData("login", email, password);
 	};
 
 	useEffect(() => {
 		const timeout = setTimeout(() => {
-			setErrorMessage({ ...errorMessage, isErr: false });
-		}, 3000);
+			setLoginError("");
+		}, 4000);
 		return () => {
 			clearTimeout(timeout);
 		};
-	}, [errorMessage.isErr]);
+	}, [loginError]);
 
 	return (
 		<>
@@ -108,9 +104,9 @@ const Login = ({ isRegister }) => {
 				<form className="login-form" onSubmit={handleSubmit}>
 					<Email email={email} setEmail={setEmail} />
 					<Password password={password} setPassword={setPassword} />
-					<Button btnName="Login" />
-					{errorMessage.isErr && (
-						<div className="text-red-600 text-sm">{errorMessage.msg}</div>
+					<Button btnName="Login" loading={loading} />
+					{loginError && (
+						<div className="text-red-600 text-sm">{loginError}</div>
 					)}
 				</form>
 				<div

@@ -1,50 +1,35 @@
 import { useEffect } from "react";
 import { Email, Name, Password, Button } from "./Login";
 import useAppContext from "../ContextApi";
-import postLoginData from "../requests/postLoginData";
-import { useNavigate } from "react-router-dom";
 
 const Register = ({ isRegister }) => {
 	const {
 		email,
 		password,
 		name,
+		setName,
 		setEmail,
 		setPassword,
-		setName,
-		errorMessage,
-		setErrorMessage,
-		loggingIn,
-		username,
+		postLoginData,
 		loading,
-		setLoading,
+		loginError,
+		setLoginError,
+		username,
 	} = useAppContext();
-
-	const navigate = useNavigate();
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		const { data, errorMsg } = await postLoginData(
-			"register",
-			email,
-			password,
-			name
-		);
-		loggingIn(data, errorMsg);
-		if (!username) {
-			return navigate("/");
-		}
-		return navigate("/todolist");
+		await postLoginData("register", email, password, name);
 	};
 
 	useEffect(() => {
 		const timeout = setTimeout(() => {
-			setErrorMessage({ ...errorMessage, isErr: false });
-		}, 3000);
+			setLoginError("");
+		}, 4000);
 		return () => {
 			clearTimeout(timeout);
 		};
-	}, [errorMessage.isErr]);
+	}, [loginError]);
 
 	return (
 		<>
@@ -55,9 +40,9 @@ const Register = ({ isRegister }) => {
 					<Name name={name} setName={setName} />
 					<Email email={email} setEmail={setEmail} />
 					<Password password={password} setPassword={setPassword} />
-					<Button btnName="Sign Up" />
-					{errorMessage.isErr && (
-						<div className="text-red-600 text-sm">{errorMessage.msg}</div>
+					<Button btnName="Sign Up" loading={loading} />
+					{loginError && (
+						<div className="text-red-600 text-sm">{loginError}</div>
 					)}
 				</form>
 				<div

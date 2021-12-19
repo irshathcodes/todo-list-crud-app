@@ -1,12 +1,11 @@
-import { Navigate } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import useAppContext from "../ContextApi";
 
 const TodoList = () => {
+	const { username } = useAppContext();
 	const token = localStorage.getItem("accessToken");
-
-	if (!token) {
-		return <Navigate to="/" />;
-	}
-
+	const history = useHistory();
+	if (!token) history.push("/");
 	return (
 		<>
 			<h1>Todo List</h1>
