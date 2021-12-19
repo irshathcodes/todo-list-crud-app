@@ -1,6 +1,6 @@
 import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
 import { AppProvider } from "./ContextApi";
-import Auth from "./components/Authentication";
+import Login from "./components/Login";
 import TodoList from "./components/TodoList";
 import { Button } from "./components/Login";
 
@@ -13,7 +13,7 @@ const App = () => {
 				<AppProvider>
 					<Switch>
 						<Route path="/" exact>
-							{token ? <TodoList /> : <Auth />}
+							{token ? <TodoList /> : <Login />}
 						</Route>
 						<Route path="/todolist" exact>
 							<TodoList />

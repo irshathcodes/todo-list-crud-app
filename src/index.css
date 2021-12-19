@@ -3,15 +3,6 @@
 @tailwind utilities;
 
 @layer components {
-	.login-container {
-		@apply w-[340px] my-0 mx-auto mt-12 bg-white h-fit rounded-lg sm:absolute sm:top-1/2 sm:left-1/2 sm:-translate-x-2/4 sm:-translate-y-1/2 sm:w-96 sm:mt-0;
-	}
-	.login-form-heading {
-		@apply text-2xl text-center pt-3 font-bold;
-	}
-	.login-form {
-		@apply flex flex-col justify-center items-center gap-8 mt-8;
-	}
 	.login-form-input {
 		@apply bg-gray-200 block rounded h-8 py-2 px-4 outline-blue-400;
 	}

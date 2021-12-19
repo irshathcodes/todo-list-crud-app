@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import useAppContext from "../ContextApi";
 
 export const Email = (props) => {
@@ -70,8 +70,12 @@ export const Button = (props) => {
 	);
 };
 
-const Login = ({ isRegister }) => {
+const Login = () => {
+	const [isRegister, setIsRegister] = useState(false);
+
 	const {
+		name,
+		setName,
 		email,
 		setEmail,
 		password,
@@ -80,14 +84,19 @@ const Login = ({ isRegister }) => {
 		loginError,
 		setLoginError,
 		loading,
-		username,
 	} = useAppContext();
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		await postLoginData("login", email, password);
+		await postLoginData(
+			`${isRegister ? "register" : "login"}`, // Post Request Login/Register Based on isRegister State Value.
+			email,
+			password,
+			name
+		);
 	};
 
+	// Displaying Errors For 4 seconds
 	useEffect(() => {
 		const timeout = setTimeout(() => {
 			setLoginError("");
@@ -99,21 +108,42 @@ const Login = ({ isRegister }) => {
 
 	return (
 		<>
-			<div className={`login-container`}>
-				<h1 className="login-form-heading">Sign in</h1>
-				<form className="login-form" onSubmit={handleSubmit}>
+			{/* Login / Register Wrapper*/}
+			<div className="w-[340px] my-0 mx-auto mt-12 bg-white h-fit rounded-lg sm:absolute sm:top-1/2 sm:left-1/2 sm:-translate-x-2/4 sm:-translate-y-1/2 sm:w-96 sm:mt-0">
+				{/* Form Heading */}
+				<h1 className="text-2xl text-center pt-3 font-bold">
+					{isRegister ? "Register" : "Login"}
+				</h1>
+				{/* Form Container */}
+				<form
+					className="flex flex-col justify-center items-center gap-8 mt-8"
+					onSubmit={handleSubmit}
+				>
+					{/* Labels & Input Fields */}
+					{isRegister && <Name name={name} setName={setName} />}
+
 					<Email email={email} setEmail={setEmail} />
+
 					<Password password={password} setPassword={setPassword} />
-					<Button btnName="Login" loading={loading} />
+
+					{/* Form Submit Button */}
+					<Button
+						btnName={`${isRegister ? "Sign Up" : "Login"}`}
+						loading={loading}
+					/>
+
+					{/* Displaying Errors */}
 					{loginError && (
 						<div className="text-red-600 text-sm">{loginError}</div>
 					)}
 				</form>
+
+				{/* Button for Toggling Login or Register Form  */}
 				<div
 					className="block  mt-8 sm:mt-12 text-center text-blue-700 cursor-pointer pb-2"
-					onClick={() => isRegister(true)}
+					onClick={() => setIsRegister(!isRegister)}
 				>
-					Register / Sign Up
+					{isRegister ? "Already have a account? Login" : "Sign Up / Register"}
 				</div>
 			</div>
 		</>
