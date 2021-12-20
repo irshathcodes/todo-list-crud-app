@@ -109,7 +109,7 @@ const Login = () => {
 	return (
 		<>
 			{/* Login / Register Wrapper*/}
-			<div className="w-[340px] my-0 mx-auto mt-12 bg-white h-fit rounded-lg sm:absolute sm:top-1/2 sm:left-1/2 sm:-translate-x-2/4 sm:-translate-y-1/2 sm:w-96 sm:mt-0">
+			<div className="w-[340px]  my-0 mx-auto mt-12 bg-white h-fit rounded-lg sm:absolute sm:top-1/2 sm:left-1/2 sm:-translate-x-2/4 sm:-translate-y-1/2 sm:w-96 sm:mt-0">
 				{/* Form Heading */}
 				<h1 className="text-2xl text-center pt-3 font-bold">
 					{isRegister ? "Register" : "Login"}

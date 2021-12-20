@@ -4,7 +4,7 @@
 
 @layer components {
 	.login-form-input {
-		@apply bg-gray-200 block rounded h-8 py-2 px-4 outline-blue-400;
+		@apply bg-gray-200 font-medium block rounded h-8 py-2 px-4 outline-blue-400;
 	}
 	.login-form-label {
 		@apply mb-2 text-sm font-semibold;
