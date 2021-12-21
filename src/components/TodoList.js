@@ -86,7 +86,7 @@ const TodoList = () => {
 					</button>
 				</form>
 
-				<div className="w-11/12 overflow-y-scroll h-96 sm:w-10/12">
+				<div className="w-11/12 overflow-auto h-96 sm:w-10/12">
 					{allTodo.map((item) => {
 						return (
 							<TodoItem
