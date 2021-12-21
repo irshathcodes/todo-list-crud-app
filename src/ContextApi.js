@@ -13,6 +13,8 @@ export const AppProvider = ({ children }) => {
 	const [username, setUsername] = useState("");
 	const [loginError, setLoginError] = useState("");
 
+	const [allTodo, setAllTodo] = useState([]);
+
 	const history = useHistory();
 
 	const postLoginData = async (url, email, password, name) => {
@@ -40,21 +42,25 @@ export const AppProvider = ({ children }) => {
 		}
 	};
 
+	const jwtToken = localStorage.getItem("accessToken");
+
 	return (
 		<AppContext.Provider
 			value={{
 				email,
 				password,
 				name,
+				loading,
+				setLoading,
 				setName,
 				setEmail,
 				setPassword,
-				loading,
-				setLoading,
 				username,
 				loginError,
 				setLoginError,
 				postLoginData,
+				allTodo,
+				setAllTodo,
 			}}
 		>
 			{children}

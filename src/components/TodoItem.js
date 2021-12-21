@@ -1,13 +1,33 @@
-const TodoItem = ({ todo }) => {
+import axios from "axios";
+
+const TodoItem = ({
+	allTodo,
+	setAllTodo,
+	todoName,
+	_id,
+	completed,
+	headers,
+	url,
+}) => {
+	const handleDelete = async () => {
+		try {
+			setAllTodo(allTodo.filter((item) => item._id !== _id));
+			await axios.delete(url + "/" + _id, { headers });
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	return (
 		<>
 			{/* Grid Wrapper */}
+
 			<section className="my-8 px-6 py-3 rounded-lg grid grid-cols-[13px_1fr_29px_24px] justify-between items-center bg-gray-200">
 				{/* Completed or not checkbox */}
 				<input type="checkbox" name="completed" />
 
 				{/* Todos */}
-				<p className="text-center">{todo}</p>
+				<p className="text-center">{todoName}</p>
 
 				{/* Edit Icon */}
 				<svg
@@ -28,6 +48,7 @@ const TodoItem = ({ todo }) => {
 				{/* Delete Icon */}
 				<svg
 					className="w-6 h-6 text-red-800 sm:hover:text-red-500 cursor-pointer"
+					onClick={handleDelete}
 					fill="none"
 					stroke="currentColor"
 					viewBox="0 0 24 24"
