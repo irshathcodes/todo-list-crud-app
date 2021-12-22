@@ -56,6 +56,11 @@ const TodoList = () => {
 		setNames("");
 	};
 
+	const handleLogout = () => {
+		localStorage.removeItem("accessToken", token);
+		localStorage.removeItem("username", username);
+		history.push("/");
+	};
 	useEffect(() => {
 		getAllTodo();
 	}, []);
@@ -66,33 +71,44 @@ const TodoList = () => {
 			<div className="w-[98%] mt-8 bg-white m-auto rounded-lg flex flex-col items-center sm:w-[550px]">
 				<button
 					onClick={() => setShowMenu(!showMenu)}
-					className="flex pr-3 pl-5 py-1 rounded-full items-center font-bold text-lg capitalize cursor-pointer mt-4 mb-2"
+					className="flex pr-3 pl-5 py-1 rounded-full items-center font-bold text-lg capitalize cursor-pointer mt-4 mb-2 transition-all"
 				>
 					{`${username}'s Todo List`}
-					<svg
-						className="w-6 h-5 text-blue-700"
-						fill="currentColor"
-						viewBox="0 0 20 20"
-						xmlns="http://www.w3.org/2000/svg"
-					>
-						<path
-							fillRule="evenodd"
-							d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-							clipRule="evenodd"
-						/>
-					</svg>
+					{showMenu ? (
+						<svg
+							className="w-6 h-6 text-blue-700"
+							fill="currentColor"
+							viewBox="0 0 20 20"
+							xmlns="http://www.w3.org/2000/svg"
+						>
+							<path
+								fillRule="evenodd"
+								d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z"
+								clipRule="evenodd"
+							/>
+						</svg>
+					) : (
+						<svg
+							className="w-6 h-6 text-blue-700"
+							fill="currentColor"
+							viewBox="0 0 20 20"
+							xmlns="http://www.w3.org/2000/svg"
+						>
+							<path
+								fillRule="evenodd"
+								d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+								clipRule="evenodd"
+							/>
+						</svg>
+					)}
 				</button>
 				{showMenu ? (
 					<div className="flex gap-6 mb-2 bg-gray-100 px-7 py-2 rounded-full  text-center cursor-pointer transition-all">
-						<button className="pt-1 font-medium sm:hover:underline text-red-600">
+						<button className="pt-1 font-medium sm:hover:underline text-red-600 transition-all">
 							Delete Account
 						</button>
 						<button
-							onClick={() => {
-								localStorage.removeItem("accessToken", token);
-								localStorage.removeItem("username", username);
-								history.push("/");
-							}}
+							onClick={handleLogout}
 							className="font-medium sm:hover:underline text-blue-600"
 						>
 							Log out
@@ -112,7 +128,7 @@ const TodoList = () => {
 					/>
 					<button
 						type="submit"
-						className="bg-blue-600 text-gray-200 px-6 h-9 py-1 sm:hover:bg-blue-800 sm:hover:text-white  active:bg-blue-500 rounded font-semibold mt-2 ml-2 "
+						className="bg-blue-600 text-gray-200 px-5 sm:px-6 h-9 py-1 sm:hover:bg-blue-800 sm:hover:text-white  active:bg-blue-500 rounded font-semibold mt-2 ml-2 "
 					>
 						{load ? <Loading /> : "Add"}
 					</button>

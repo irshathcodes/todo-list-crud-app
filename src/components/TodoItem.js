@@ -1,3 +1,4 @@
+import { useState } from "react";
 import axios from "axios";
 
 const TodoItem = ({
@@ -9,6 +10,23 @@ const TodoItem = ({
 	headers,
 	url,
 }) => {
+	const handleIsCompleted = async () => {
+		const specificTodoId = allTodo.findIndex((item) => item._id === _id); //Finding Index of specific Todo.
+		const specificTodo = allTodo.find((item) => item._id === _id).completed; // Finding the value of that todo
+		const isCompleted = !specificTodo; // toggle when click
+		const allData = [...allTodo];
+		allData[specificTodoId].completed = isCompleted;
+		setAllTodo(allData);
+		try {
+			await axios.patch(
+				url + "/" + _id,
+				{ completed: isCompleted },
+				{ headers }
+			);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 	const handleDelete = async () => {
 		try {
 			setAllTodo(allTodo.filter((item) => item._id !== _id));
@@ -20,13 +38,29 @@ const TodoItem = ({
 	return (
 		<>
 			{/* Grid Wrapper */}
-
-			<section className="my-8 px-6 py-3 rounded-lg grid grid-cols-[13px_1fr_29px_24px] justify-between items-center bg-gray-200">
+			<section className="my-5 mt-8 px-6 py-3 rounded-lg grid grid-cols-[13px_1fr_29px_24px] justify-between items-center bg-gray-200">
 				{/* Completed or not checkbox */}
-				<input type="checkbox" name="completed" />
+				<div className="cursor-pointer" onClick={handleIsCompleted}>
+					<svg
+						className={`w-6 h-6  ${
+							completed ? "text-blue-800" : "text-gray-400"
+						}`}
+						fill="currentColor"
+						viewBox="0 0 20 20"
+						xmlns="http://www.w3.org/2000/svg"
+					>
+						<path
+							fillRule="evenodd"
+							d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+							clipRule="evenodd"
+						/>
+					</svg>
+				</div>
 
 				{/* Todos */}
-				<p className="text-center">{todoName}</p>
+				<p className={`text-center ${completed ? "line-through" : ""}`}>
+					{todoName}
+				</p>
 
 				{/* Edit Icon */}
 				<svg
