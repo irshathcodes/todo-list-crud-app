@@ -17,7 +17,6 @@ const TodoItem = ({
 			console.log(error);
 		}
 	};
-
 	return (
 		<>
 			{/* Grid Wrapper */}

@@ -1,9 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
-import useAppContext from "../ContextApi";
 import TodoItem from "./TodoItem";
-import { useState } from "react/cjs/react.development";
 
 const Loading = () => {
 	return (
@@ -21,8 +19,10 @@ const TodoList = () => {
 	const [load, setLoad] = useState(false);
 	const [allTodo, setAllTodo] = useState([]);
 	const [names, setNames] = useState("");
+	const [showMenu, setShowMenu] = useState(false);
 
-	const { username } = useAppContext();
+	const username = localStorage.getItem("username");
+
 	const history = useHistory();
 	if (!token) history.push("/");
 
@@ -59,12 +59,46 @@ const TodoList = () => {
 	useEffect(() => {
 		getAllTodo();
 	}, []);
-
+	//
 	return (
 		<>
 			{/* Whole TodoList Wrapper */}
-			<div className="w-[98%] mt-10 bg-white m-auto rounded-lg flex flex-col items-center sm:w-[550px]">
-				<h1 className="text-2xl m-2 font-bold">Todo List</h1>
+			<div className="w-[98%] mt-8 bg-white m-auto rounded-lg flex flex-col items-center sm:w-[550px]">
+				<button
+					onClick={() => setShowMenu(!showMenu)}
+					className="flex pr-3 pl-5 py-1 rounded-full items-center font-bold text-lg capitalize cursor-pointer mt-4 mb-2"
+				>
+					{`${username}'s Todo List`}
+					<svg
+						className="w-6 h-5 text-blue-700"
+						fill="currentColor"
+						viewBox="0 0 20 20"
+						xmlns="http://www.w3.org/2000/svg"
+					>
+						<path
+							fillRule="evenodd"
+							d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+							clipRule="evenodd"
+						/>
+					</svg>
+				</button>
+				{showMenu ? (
+					<div className="flex gap-6 mb-2 bg-gray-100 px-7 py-2 rounded-full  text-center cursor-pointer transition-all">
+						<button className="pt-1 font-medium sm:hover:underline text-red-600">
+							Delete Account
+						</button>
+						<button
+							onClick={() => {
+								localStorage.removeItem("accessToken", token);
+								localStorage.removeItem("username", username);
+								history.push("/");
+							}}
+							className="font-medium sm:hover:underline text-blue-600"
+						>
+							Log out
+						</button>
+					</div>
+				) : null}
 
 				{/* Todo input and Button Container */}
 				<form onSubmit={handleSubmit}>
@@ -73,20 +107,18 @@ const TodoList = () => {
 						value={names}
 						required
 						onChange={(e) => setNames(e.target.value)}
-						className="py-1 px-2 w-[70%] rounded m-2 font-medium bg-gray-200 outline-blue-600 outline-8 focus:bg-white sm:w-[350px]"
+						className="py-1 px-2 h-9 w-[70%] rounded  font-medium bg-gray-200 outline-blue-600 outline-8 focus:bg-white sm:w-[350px] mt-2"
 						placeholder="eg: Hit the gym at 5"
 					/>
 					<button
 						type="submit"
-						className={`bg-blue-600 text-gray-200 px-6 py-1 sm:hover:bg-blue-800 sm:hover:text-white  active:bg-blue-500 rounded font-semibold ${
-							load && "py-2"
-						}`}
+						className="bg-blue-600 text-gray-200 px-6 h-9 py-1 sm:hover:bg-blue-800 sm:hover:text-white  active:bg-blue-500 rounded font-semibold mt-2 ml-2 "
 					>
 						{load ? <Loading /> : "Add"}
 					</button>
 				</form>
 
-				<div className="w-11/12 overflow-auto h-96 sm:w-10/12">
+				<div className="w-11/12 overflow-auto max-h-96 sm:w-10/12">
 					{allTodo.map((item) => {
 						return (
 							<TodoItem
@@ -102,7 +134,7 @@ const TodoList = () => {
 					})}
 				</div>
 
-				<button className="w-36 m-4 mt-6 py-1 rounded-md bg-red-500 sm:hover:bg-red-600 sm:hover:text-white sm:active:bg-red-500 font-semibold text-gray-100">
+				<button className="w-36 m-4 mt-4 py-1 rounded-md bg-red-500 sm:hover:bg-red-600 sm:hover:text-white sm:active:bg-red-500 font-semibold text-gray-100">
 					Clear All
 				</button>
 			</div>

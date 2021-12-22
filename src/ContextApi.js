@@ -10,7 +10,6 @@ export const AppProvider = ({ children }) => {
 	const [name, setName] = useState("");
 
 	const [loading, setLoading] = useState(false);
-	const [username, setUsername] = useState("");
 	const [loginError, setLoginError] = useState("");
 
 	const [allTodo, setAllTodo] = useState([]);
@@ -24,9 +23,9 @@ export const AppProvider = ({ children }) => {
 				`https://todo-list-crud-api.herokuapp.com/api/auth/${url}`,
 				{ email, password, name: name || "" }
 			);
-			const { token, name: userName } = res.data;
+			const { token, name: loginUserName } = res.data;
 			localStorage.setItem("accessToken", token);
-			setUsername(userName);
+			localStorage.setItem("username", loginUserName);
 			setName("");
 			setEmail("");
 			setPassword("");
@@ -34,6 +33,7 @@ export const AppProvider = ({ children }) => {
 			history.push("/todolist");
 		} catch (error) {
 			localStorage.removeItem("accessToken");
+			localStorage.removeItem("username");
 			if (error.response.data) {
 				setLoginError(error.response.data.msg);
 			}
@@ -41,8 +41,6 @@ export const AppProvider = ({ children }) => {
 			console.log(error);
 		}
 	};
-
-	const jwtToken = localStorage.getItem("accessToken");
 
 	return (
 		<AppContext.Provider
@@ -55,7 +53,6 @@ export const AppProvider = ({ children }) => {
 				setName,
 				setEmail,
 				setPassword,
-				username,
 				loginError,
 				setLoginError,
 				postLoginData,
