@@ -12,8 +12,9 @@ const App = () => {
 			<BrowserRouter>
 				<AppProvider>
 					<Switch>
-						<Route path="/" exact>
-							{token ? <TodoList /> : <Login />}
+						<Route path="/login" exact>
+							{/* {token ? <TodoList /> : <Login />} */}
+							<Login />
 						</Route>
 						<Route path="/todolist" exact>
 							<TodoList />

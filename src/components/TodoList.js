@@ -3,12 +3,6 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 import TodoItem from "./TodoItem";
 
-const Loading = () => {
-	return (
-		<div className="w-4 h-4  border-2 border-blue-500 border-solid rounded-full border-t-white animate-spin"></div>
-	);
-};
-
 const TodoList = () => {
 	const url = "https://todo-list-crud-api.herokuapp.com/api/todo";
 	const token = localStorage.getItem("accessToken");
@@ -16,12 +10,23 @@ const TodoList = () => {
 		Authorization: `Bearer ${token}`,
 	};
 
+	const Loading = () => {
+		return (
+			<div className="w-4 h-4  border-2 border-blue-500 border-solid rounded-full border-t-white animate-spin"></div>
+		);
+	};
+
 	const [load, setLoad] = useState(false);
 	const [allTodo, setAllTodo] = useState([]);
 	const [names, setNames] = useState("");
 	const [showMenu, setShowMenu] = useState(false);
 
-	const username = localStorage.getItem("username");
+	console.log(load);
+	console.log(allTodo);
+	console.log(names);
+	console.log(showMenu);
+
+	// const username = localStorage.getItem("username") || "";
 
 	const history = useHistory();
 	if (!token) history.push("/");
@@ -57,9 +62,9 @@ const TodoList = () => {
 	};
 
 	const handleLogout = () => {
-		localStorage.removeItem("accessToken", token);
-		localStorage.removeItem("username", username);
-		history.push("/");
+		localStorage.removeItem("accessToken");
+		localStorage.removeItem("username");
+		history.push("/login");
 	};
 	useEffect(() => {
 		getAllTodo();
@@ -73,7 +78,7 @@ const TodoList = () => {
 					onClick={() => setShowMenu(!showMenu)}
 					className="flex pr-3 pl-5 py-1 rounded-full items-center font-bold text-lg capitalize cursor-pointer mt-4 mb-2 transition-all"
 				>
-					{`${username}'s Todo List`}
+					{`'s Todo List`}
 					{showMenu ? (
 						<svg
 							className="w-6 h-6 text-blue-700"
