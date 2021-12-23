@@ -26,7 +26,7 @@ const TodoList = () => {
 	console.log(names);
 	console.log(showMenu);
 
-	// const username = localStorage.getItem("username") || "";
+	const username = localStorage.getItem("username") || "";
 
 	const history = useHistory();
 	if (!token) history.push("/");
@@ -64,7 +64,7 @@ const TodoList = () => {
 	const handleLogout = () => {
 		localStorage.removeItem("accessToken");
 		localStorage.removeItem("username");
-		history.push("/login");
+		history.push("/");
 	};
 	useEffect(() => {
 		getAllTodo();
@@ -78,7 +78,7 @@ const TodoList = () => {
 					onClick={() => setShowMenu(!showMenu)}
 					className="flex pr-3 pl-5 py-1 rounded-full items-center font-bold text-lg capitalize cursor-pointer mt-4 mb-2 transition-all"
 				>
-					{`'s Todo List`}
+					{`${username}'s Todo List`}
 					{showMenu ? (
 						<svg
 							className="w-6 h-6 text-blue-700"
@@ -122,7 +122,7 @@ const TodoList = () => {
 				) : null}
 
 				{/* Todo input and Button Container */}
-				<form onSubmit={handleSubmit}>
+				<form className="mb-4" onSubmit={handleSubmit}>
 					<input
 						type="text"
 						value={names}

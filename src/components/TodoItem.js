@@ -38,33 +38,36 @@ const TodoItem = ({
 	return (
 		<>
 			{/* Grid Wrapper */}
-			<section className="my-5 mt-8 px-6 py-3 rounded-lg grid grid-cols-[13px_1fr_29px_24px] justify-between items-center bg-gray-200">
-				{/* Completed or not checkbox */}
-				<div className="cursor-pointer" onClick={handleIsCompleted}>
-					<svg
-						className={`w-6 h-6  ${
-							completed ? "text-blue-800" : "text-gray-400"
-						}`}
-						fill="currentColor"
-						viewBox="0 0 20 20"
-						xmlns="http://www.w3.org/2000/svg"
-					>
-						<path
-							fillRule="evenodd"
-							d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-							clipRule="evenodd"
-						/>
-					</svg>
-				</div>
+			<section className="my-5 mr-2 mt-4 p-3 rounded-lg grid grid-cols-[24px_1fr_29px_24px] justify-between items-center bg-gray-200">
+				{/* Completed Icon */}
+				<svg
+					className={`w-6 h-6  cursor-pointer ${
+						completed ? "text-blue-800" : "text-gray-400"
+					}`}
+					onClick={handleIsCompleted}
+					fill="currentColor"
+					viewBox="0 0 20 20"
+					xmlns="http://www.w3.org/2000/svg"
+				>
+					<path
+						fillRule="evenodd"
+						d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+						clipRule="evenodd"
+					/>
+				</svg>
 
 				{/* Todos */}
-				<p className={`text-center ${completed ? "line-through" : ""}`}>
+				<p
+					className={`mx-2 max-w-[318px] text-center ${
+						completed ? "line-through" : ""
+					}`}
+				>
 					{todoName}
 				</p>
 
 				{/* Edit Icon */}
 				<svg
-					className="w-6 h-6 text-green-800 sm:hover:text-green-600 cursor-pointer"
+					className="w-6 h-6  text-green-800 sm:hover:text-green-600 cursor-pointer"
 					fill="none"
 					stroke="currentColor"
 					viewBox="0 0 24 24"

@@ -4,16 +4,13 @@ import Login from "./components/Login";
 import TodoList from "./components/TodoList";
 import { Button } from "./components/Login";
 
-const token = localStorage.getItem("accessToken");
-
 const App = () => {
 	return (
 		<>
 			<BrowserRouter>
 				<AppProvider>
 					<Switch>
-						<Route path="/login" exact>
-							{/* {token ? <TodoList /> : <Login />} */}
+						<Route path="/" exact>
 							<Login />
 						</Route>
 						<Route path="/todolist" exact>

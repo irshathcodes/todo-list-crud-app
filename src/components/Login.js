@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useHistory } from "react-router";
 import useAppContext from "../ContextApi";
 
 export const Email = (props) => {
@@ -72,6 +73,11 @@ export const Button = (props) => {
 
 const Login = () => {
 	const [isRegister, setIsRegister] = useState(false);
+
+	const history = useHistory();
+	const token = localStorage.getItem("accessToken");
+
+	if (token) history.push("/todolist");
 
 	const {
 		name,
