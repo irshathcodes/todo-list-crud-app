@@ -21,6 +21,7 @@ const TodoList = () => {
 	const [names, setNames] = useState("");
 	const [showMenu, setShowMenu] = useState(false);
 	const [edit, setEdit] = useState({ isEdit: false, value: "", id: "" });
+	const [deleteAccount, setDeleteAccount] = useState("Delete Account");
 
 	const username = localStorage.getItem("username") || "";
 
@@ -83,6 +84,22 @@ const TodoList = () => {
 		localStorage.removeItem("username");
 		history.push("/");
 	};
+
+	const handleDeleteAccount = () => {
+		setDeleteAccount("Deleting...");
+		axios
+			.delete(url + "/user/deleteAccount", { headers })
+			.then((res) => {
+				setDeleteAccount("Account Deleted");
+				localStorage.removeItem("accessToken");
+				history.push("/");
+			})
+			.catch((err) => {
+				console.log(err);
+				setDeleteAccount("Some Error, Try Later");
+			});
+	};
+
 	useEffect(() => {
 		getAllTodo();
 	}, []);
@@ -133,8 +150,11 @@ const TodoList = () => {
 					 px-7 py-2 mb-2 flex gap-6 
 					 rounded-full  bg-gray-100 text-center `}
 					>
-						<button className="font-medium pt-1  sm:hover:underline text-red-600 cursor-pointer active:underline">
-							Delete Account
+						<button
+							onClick={handleDeleteAccount}
+							className="font-medium pt-1  sm:hover:underline text-red-600 cursor-pointer active:underline"
+						>
+							{deleteAccount}
 						</button>
 						<button
 							onClick={handleLogout}

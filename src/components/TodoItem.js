@@ -81,7 +81,7 @@ const TodoItem = ({
 
 				{/* Edit Icon */}
 				<svg
-					className="w-6 h-6  text-green-800 sm:hover:text-green-600 cursor-pointer"
+					className="w-5 h-5  text-green-800 sm:hover:text-green-600 cursor-pointer"
 					onClick={handleEdit}
 					fill="none"
 					stroke="currentColor"
@@ -98,7 +98,7 @@ const TodoItem = ({
 
 				{/* Delete Icon */}
 				<svg
-					className="w-6 h-6 text-red-800 sm:hover:text-red-500 cursor-pointer"
+					className="w-5 h-5 text-red-800 sm:hover:text-red-500 cursor-pointer"
 					onClick={handleDelete}
 					fill="none"
 					stroke="currentColor"
