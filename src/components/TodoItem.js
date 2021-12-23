@@ -9,6 +9,8 @@ const TodoItem = ({
 	completed,
 	headers,
 	url,
+	edit,
+	setEdit,
 }) => {
 	const handleIsCompleted = async () => {
 		const specificTodoId = allTodo.findIndex((item) => item._id === _id); //Finding Index of specific Todo.
@@ -35,6 +37,18 @@ const TodoItem = ({
 			console.log(error);
 		}
 	};
+
+	const handleEdit = () => {
+		const editingItem = allTodo.find((item) => item._id === _id);
+		setEdit({
+			...edit,
+			isEdit: !edit.IsEdit,
+			value: editingItem.todoName,
+			id: editingItem._id,
+		});
+		setAllTodo(allTodo.filter((item) => item._id !== _id));
+	};
+
 	return (
 		<>
 			{/* Grid Wrapper */}
@@ -68,6 +82,7 @@ const TodoItem = ({
 				{/* Edit Icon */}
 				<svg
 					className="w-6 h-6  text-green-800 sm:hover:text-green-600 cursor-pointer"
+					onClick={handleEdit}
 					fill="none"
 					stroke="currentColor"
 					viewBox="0 0 24 24"

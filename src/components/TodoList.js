@@ -3,6 +3,12 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 import TodoItem from "./TodoItem";
 
+const Loading = () => {
+	return (
+		<div className="w-4 h-4  border-2 border-blue-500 border-solid rounded-full border-t-white animate-spin"></div>
+	);
+};
+
 const TodoList = () => {
 	const url = "https://todo-list-crud-api.herokuapp.com/api/todo";
 	const token = localStorage.getItem("accessToken");
@@ -10,21 +16,13 @@ const TodoList = () => {
 		Authorization: `Bearer ${token}`,
 	};
 
-	const Loading = () => {
-		return (
-			<div className="w-4 h-4  border-2 border-blue-500 border-solid rounded-full border-t-white animate-spin"></div>
-		);
-	};
-
 	const [load, setLoad] = useState(false);
 	const [allTodo, setAllTodo] = useState([]);
 	const [names, setNames] = useState("");
 	const [showMenu, setShowMenu] = useState(false);
+	const [edit, setEdit] = useState({ isEdit: false, value: "", id: "" });
 
-	console.log(load);
-	console.log(allTodo);
-	console.log(names);
-	console.log(showMenu);
+	console.log(edit);
 
 	const username = localStorage.getItem("username") || "";
 
@@ -57,8 +55,29 @@ const TodoList = () => {
 			}
 		};
 
-		postData();
-		setNames("");
+		const editData = async () => {
+			try {
+				setLoad(true);
+				await axios.patch(
+					url + "/" + edit.id,
+					{ todoName: edit.value },
+					{ headers }
+				);
+				await getAllTodo();
+				setLoad(false);
+			} catch (error) {
+				setLoad(false);
+				console.log(error);
+			}
+		};
+
+		if (edit.isEdit) {
+			editData();
+			setEdit({ ...edit, value: "", isEdit: false });
+		} else {
+			postData();
+			setNames("");
+		}
 	};
 
 	const handleLogout = () => {
@@ -125,9 +144,15 @@ const TodoList = () => {
 				<form className="mb-4" onSubmit={handleSubmit}>
 					<input
 						type="text"
-						value={names}
+						value={edit.isEdit ? edit.value : names}
 						required
-						onChange={(e) => setNames(e.target.value)}
+						onChange={(e) => {
+							if (edit.isEdit) {
+								setEdit({ ...edit, value: e.target.value });
+							} else {
+								setNames(e.target.value);
+							}
+						}}
 						className="py-1 px-2 h-9 w-[70%] rounded  font-medium bg-gray-200 outline-blue-600 outline-8 focus:bg-white sm:w-[350px] mt-2"
 						placeholder="eg: Hit the gym at 5"
 					/>
@@ -135,7 +160,7 @@ const TodoList = () => {
 						type="submit"
 						className="bg-blue-600 text-gray-200 px-5 sm:px-6 h-9 py-1 sm:hover:bg-blue-800 sm:hover:text-white  active:bg-blue-500 rounded font-semibold mt-2 ml-2 "
 					>
-						{load ? <Loading /> : "Add"}
+						{load ? <Loading /> : edit.isEdit ? "Edit" : "Add"}
 					</button>
 				</form>
 
@@ -150,6 +175,8 @@ const TodoList = () => {
 								url={url}
 								allTodo={allTodo}
 								setAllTodo={setAllTodo}
+								edit={edit}
+								setEdit={setEdit}
 							/>
 						);
 					})}
