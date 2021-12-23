@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
 import { useHistory } from "react-router";
-import useAppContext from "../ContextApi";
 
 export const Email = (props) => {
 	return (
@@ -74,23 +74,44 @@ export const Button = (props) => {
 const Login = () => {
 	const [isRegister, setIsRegister] = useState(false);
 
+	// State for Login & Register Form Input
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+	const [name, setName] = useState("");
+
+	const [loading, setLoading] = useState(false);
+	const [loginError, setLoginError] = useState("");
+
 	const history = useHistory();
 	const token = localStorage.getItem("accessToken");
 
-	if (token) history.push("/todolist");
+	if (token) history.push("/todolist"); // checking if the token exists. If yes go to todolist route.
 
-	const {
-		name,
-		setName,
-		email,
-		setEmail,
-		password,
-		setPassword,
-		postLoginData,
-		loginError,
-		setLoginError,
-		loading,
-	} = useAppContext();
+	const postLoginData = async (url, email, password, name) => {
+		try {
+			setLoading(true);
+			const res = await axios.post(
+				`https://todo-list-crud-api.herokuapp.com/api/auth/${url}`,
+				{ email, password, name: name || "" }
+			);
+			const { token, name: loginUserName } = res.data;
+			localStorage.setItem("accessToken", token);
+			localStorage.setItem("username", loginUserName);
+			setName("");
+			setEmail("");
+			setPassword("");
+			setLoading(false);
+			history.push("/todolist");
+		} catch (error) {
+			localStorage.removeItem("accessToken");
+			localStorage.removeItem("username");
+			if (error.response.data) {
+				setLoginError(error.response.data.msg);
+			}
+			setLoading(false);
+			console.log(error);
+		}
+	};
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();

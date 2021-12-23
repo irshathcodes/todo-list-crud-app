@@ -108,7 +108,7 @@ const TodoList = () => {
 	useEffect(() => {
 		getAllTodo();
 	}, []);
-	//
+
 	return (
 		<>
 			{/* Whole TodoList Wrapper */}
