@@ -100,6 +100,11 @@ const TodoList = () => {
 			});
 	};
 
+	const handleClearAll = () => {
+		setAllTodo([]);
+		axios.delete(url, { headers }).catch((err) => console.log(err));
+	};
+
 	useEffect(() => {
 		getAllTodo();
 	}, []);
@@ -211,7 +216,10 @@ const TodoList = () => {
 				</div>
 
 				{/* Clear All Btn */}
-				<button className="w-36 m-4 mt-4 py-1 rounded-md bg-red-500  sm:hover:bg-red-600 sm:hover:text-white  active:opacity-90 font-semibold text-gray-100">
+				<button
+					onClick={handleClearAll}
+					className="w-36 m-4 mt-4 py-1 rounded-md bg-red-500  sm:hover:bg-red-600 sm:hover:text-white  active:opacity-90 font-semibold text-gray-100"
+				>
 					Clear All
 				</button>
 			</div>
