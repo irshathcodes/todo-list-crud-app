@@ -146,7 +146,7 @@ const Login = () => {
 
 				{/* Button for Toggling Login or Register Form  */}
 				<div
-					className="block  mt-8 sm:mt-12 text-center text-blue-700 cursor-pointer pb-2"
+					className="block  mt-8 sm:mt-12 text-center text-blue-700 cursor-pointer pb-2 active:underline"
 					onClick={() => setIsRegister(!isRegister)}
 				>
 					{isRegister ? "Already have a account? Login" : "Sign Up / Register"}

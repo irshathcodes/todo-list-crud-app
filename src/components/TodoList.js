@@ -22,8 +22,6 @@ const TodoList = () => {
 	const [showMenu, setShowMenu] = useState(false);
 	const [edit, setEdit] = useState({ isEdit: false, value: "", id: "" });
 
-	console.log(edit);
-
 	const username = localStorage.getItem("username") || "";
 
 	const history = useHistory();
@@ -93,14 +91,15 @@ const TodoList = () => {
 		<>
 			{/* Whole TodoList Wrapper */}
 			<div className="w-[98%] mt-8 bg-white m-auto rounded-lg flex flex-col items-center sm:w-[550px]">
+				{/* User name  */}
 				<button
 					onClick={() => setShowMenu(!showMenu)}
-					className="flex pr-3 pl-5 py-1 rounded-full items-center font-bold text-lg capitalize cursor-pointer mt-4 mb-2 transition-all"
+					className="flex pr-3 pl-5 py-1 rounded-full items-center font-bold text-lg capitalize cursor-pointer mt-4 mb-2"
 				>
 					{`${username}'s Todo List`}
 					{showMenu ? (
 						<svg
-							className="w-6 h-6 text-blue-700"
+							className="ml-1 w-5 h-5 text-blue-800"
 							fill="currentColor"
 							viewBox="0 0 20 20"
 							xmlns="http://www.w3.org/2000/svg"
@@ -113,7 +112,7 @@ const TodoList = () => {
 						</svg>
 					) : (
 						<svg
-							className="w-6 h-6 text-blue-700"
+							className="ml-1 w-5 h-5 text-blue-800"
 							fill="currentColor"
 							viewBox="0 0 20 20"
 							xmlns="http://www.w3.org/2000/svg"
@@ -126,21 +125,27 @@ const TodoList = () => {
 						</svg>
 					)}
 				</button>
+
+				{/* Logout Btn */}
 				{showMenu ? (
-					<div className="flex gap-6 mb-2 bg-gray-100 px-7 py-2 rounded-full  text-center cursor-pointer transition-all">
-						<button className="pt-1 font-medium sm:hover:underline text-red-600 transition-all">
+					<div
+						className={`
+					 px-7 py-2 mb-2 flex gap-6 
+					 rounded-full  bg-gray-100 text-center `}
+					>
+						<button className="font-medium pt-1  sm:hover:underline text-red-600 cursor-pointer active:underline">
 							Delete Account
 						</button>
 						<button
 							onClick={handleLogout}
-							className="font-medium sm:hover:underline text-blue-600"
+							className="font-medium sm:hover:underline text-blue-600 cursor-pointer active:underline"
 						>
 							Log out
 						</button>
 					</div>
 				) : null}
 
-				{/* Todo input and Button Container */}
+				{/*Input Box*/}
 				<form className="mb-4" onSubmit={handleSubmit}>
 					<input
 						type="text"
@@ -156,14 +161,17 @@ const TodoList = () => {
 						className="py-1 px-2 h-9 w-[70%] rounded  font-medium bg-gray-200 outline-blue-600 outline-8 focus:bg-white sm:w-[350px] mt-2"
 						placeholder="eg: Hit the gym at 5"
 					/>
+
+					{/* Add Btn */}
 					<button
 						type="submit"
-						className="bg-blue-600 text-gray-200 px-5 sm:px-6 h-9 py-1 sm:hover:bg-blue-800 sm:hover:text-white  active:bg-blue-500 rounded font-semibold mt-2 ml-2 "
+						className="bg-blue-600 text-gray-200 px-5 sm:px-6 h-9 py-1 sm:hover:bg-blue-800 sm:hover:text-white  active:bg-blue-400 rounded font-semibold mt-2 ml-2 transition-[background]"
 					>
 						{load ? <Loading /> : edit.isEdit ? "Edit" : "Add"}
 					</button>
 				</form>
 
+				{/* List of Todo Wrapper */}
 				<div className="w-11/12 overflow-auto max-h-96 sm:w-10/12">
 					{allTodo.map((item) => {
 						return (
@@ -182,7 +190,8 @@ const TodoList = () => {
 					})}
 				</div>
 
-				<button className="w-36 m-4 mt-4 py-1 rounded-md bg-red-500 sm:hover:bg-red-600 sm:hover:text-white sm:active:bg-red-500 font-semibold text-gray-100">
+				{/* Clear All Btn */}
+				<button className="w-36 m-4 mt-4 py-1 rounded-md bg-red-500  sm:hover:bg-red-600 sm:hover:text-white  active:opacity-90 font-semibold text-gray-100">
 					Clear All
 				</button>
 			</div>
