@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import TodoItem from "./TodoItem";
@@ -22,6 +22,15 @@ const TodoList = () => {
 	const [showMenu, setShowMenu] = useState(false);
 	const [edit, setEdit] = useState({ isEdit: false, value: "", id: "" });
 	const [deleteAccount, setDeleteAccount] = useState("Delete Account");
+
+	const inputElement = useRef();
+
+	useEffect(() => {
+		inputElement.current.focus();
+		if (edit.isEdit) {
+			inputElement.current.focus();
+		}
+	}, [edit.isEdit]);
 
 	const username = localStorage.getItem("username") || "";
 
@@ -102,6 +111,7 @@ const TodoList = () => {
 
 	const handleClearAll = () => {
 		setAllTodo([]);
+		setShowMenu(false);
 		axios.delete(url, { headers }).catch((err) => console.log(err));
 	};
 
@@ -112,11 +122,11 @@ const TodoList = () => {
 	return (
 		<>
 			{/* Whole TodoList Wrapper */}
-			<div className="w-[98%] mt-8 bg-white m-auto rounded-lg flex flex-col items-center sm:w-[550px]">
+			<div className="w-full sm:mt-8 pb-4 bg-white m-auto rounded-lg flex flex-col items-center sm:w-[550px] ">
 				{/* User name  */}
 				<button
 					onClick={() => setShowMenu(!showMenu)}
-					className="flex pr-3 pl-5 py-1 rounded-full items-center font-bold text-lg capitalize cursor-pointer mt-4 mb-2"
+					className="flex pr-3 pl-5 py-1 rounded-full items-center font-bold text-lg capitalize cursor-pointer mt-2 mb-1"
 				>
 					{`${username}'s Todo List`}
 					{showMenu ? (
@@ -148,16 +158,22 @@ const TodoList = () => {
 					)}
 				</button>
 
-				{/* Logout Btn */}
+				{/* Logout, Delete, ClearAll Btns */}
 				{showMenu ? (
 					<div
 						className={`
-					 px-7 py-2 mb-2 flex gap-6 
-					 rounded-full  bg-gray-100 text-center `}
+					 px-7 py-2 mb-2 flex gap-6 justify-center
+					 rounded-full  bg-gray-100 `}
 					>
 						<button
+							onClick={handleClearAll}
+							className="font-medium sm:hover:underline text-orange-600 cursor-pointer active:underline"
+						>
+							Clear All
+						</button>
+						<button
 							onClick={handleDeleteAccount}
-							className="font-medium pt-1  sm:hover:underline text-red-600 cursor-pointer active:underline"
+							className="font-medium sm:hover:underline text-red-600 cursor-pointer active:underline"
 						>
 							{deleteAccount}
 						</button>
@@ -171,10 +187,11 @@ const TodoList = () => {
 				) : null}
 
 				{/*Input Box*/}
-				<form className="mb-4" onSubmit={handleSubmit}>
+				<form className="flex mb-3" onSubmit={handleSubmit}>
 					<input
 						type="text"
 						value={edit.isEdit ? edit.value : names}
+						ref={inputElement}
 						required
 						onChange={(e) => {
 							if (edit.isEdit) {
@@ -197,7 +214,7 @@ const TodoList = () => {
 				</form>
 
 				{/* List of Todo Wrapper */}
-				<div className="w-11/12 overflow-auto max-h-96 sm:w-10/12">
+				<div className="w-11/12 overflow-auto sm:max-h-96 sm:w-10/12">
 					{allTodo.map((item) => {
 						return (
 							<TodoItem
@@ -214,14 +231,6 @@ const TodoList = () => {
 						);
 					})}
 				</div>
-
-				{/* Clear All Btn */}
-				<button
-					onClick={handleClearAll}
-					className="w-36 m-4 mt-4 py-1 rounded-md bg-red-500  sm:hover:bg-red-600 sm:hover:text-white  active:opacity-90 font-semibold text-gray-100"
-				>
-					Clear All
-				</button>
 			</div>
 		</>
 	);

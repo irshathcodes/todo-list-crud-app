@@ -51,7 +51,10 @@ const TodoItem = ({
 	return (
 		<>
 			{/* Grid Wrapper */}
-			<section className="my-5 mr-2 mt-4 p-3 rounded-lg grid grid-cols-[24px_1fr_29px_24px] justify-between items-center bg-gray-200">
+			<section
+				className="mr-1 mt-2 my-3 py-3 px-2 rounded-lg grid grid-cols-[24px_1fr_24px_24px]
+			items-center justify-between bg-gray-200"
+			>
 				{/* Completed Icon */}
 				<svg
 					className={`w-6 h-6  cursor-pointer ${
@@ -70,11 +73,7 @@ const TodoItem = ({
 				</svg>
 
 				{/* Todos */}
-				<p
-					className={`mx-2 max-w-[318px] text-center ${
-						completed ? "line-through" : ""
-					}`}
-				>
+				<p className={`text-center mx-1 ${completed ? "line-through" : ""}`}>
 					{todoName}
 				</p>
 
